@@ -7,4 +7,5 @@ This application must be run in Azure Virtual Machine with enabled support for "
 > Note : Required setup to provide access to System/User Assigned Managed Identities to be able to access resources must be provided before running the application.
 ### Steps to run this Application:
 - Navigate to "src\main\java\com\test\aadmsi\msiexample\TestMSIAuth.java" file and provide database, servername and User Assigned MSI (optional) details.
+- Also provide User Assigned MSI Object ID in "src\main\java\com\test\aadmsi\msiexample\App.java" to validate User Assigned MSI working for current Virtual Machine.
 - Run 'mvn clean install' from the root folder to run the application.
