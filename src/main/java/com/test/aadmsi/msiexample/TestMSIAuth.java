@@ -31,7 +31,16 @@ public class TestMSIAuth {
 		try (Connection con = ds.getConnection();
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery("SELECT @@VERSION")) {
-			System.out.println("Connected with SYSTEM MSI Authentication");
+			System.out.println("\n\nConnected with SYSTEM MSI Authentication");
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		}
+		
+		try (Connection con = ds.getConnection();
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT Distinct TABLE_NAME FROM information_schema.TABLES")) {
+			System.out.println("Connected with SYSTEM MSI Authentication, Tables : ");
 			while (rs.next()) {
 				System.out.println(rs.getString(1));
 			}
@@ -47,7 +56,16 @@ public class TestMSIAuth {
 		try (Connection con = ds.getConnection();
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery("SELECT @@VERSION")) {
-			System.out.println("Connected with User MSI Authentication");
+			System.out.println("\n\nConnected with User MSI Authentication");
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		}
+		
+		try (Connection con = ds.getConnection();
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT Distinct TABLE_NAME FROM information_schema.TABLES")) {
+			System.out.println("\n\nConnected with User MSI Authentication, Tables : ");
 			while (rs.next()) {
 				System.out.println(rs.getString(1));
 			}

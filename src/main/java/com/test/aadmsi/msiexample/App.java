@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.microsoft.azure.msiAuthTokenProvider.*;
 /**
  * Sample Application that runs without driver support to test VM configuration.
  */
@@ -13,15 +14,29 @@ public class App {
 
 	public static void main(String[] args) throws Exception {
 		System.out.println("\nTesting System Assigned Managed Identity for Database");
-		App.getToken("https://database.windows.net", null);
+		App.getTokenUsingJar("https://database.windows.net", null);
 		
 		System.out.println("\nTesting System Assigned Managed Identity for Azure Management");
-		App.getToken("https://management.azure.com", null);
+		App.getTokenUsingJar("https://management.azure.com", null);
 
 		System.out.println("\nTesting User Assigned Managed Identity");
-		App.getToken("https://database.windows.net/", ""); // Pass Object ID of User Assigned MSI
+		App.getTokenUsingJar("https://database.windows.net/", ""); // Pass Object ID of User Assigned MSI
 	}
 
+    static String getTokenUsingJar(String resourceId, String clientId) throws Exception
+	{
+		MSICredentials credsProvider = MSICredentials.getMSICredentials();
+		if (clientId != null && !clientId.isEmpty()) {
+			credsProvider.updateClientId(clientId);
+		}
+		
+		String token = credsProvider.getToken(resourceId).toBlocking().value().accessToken();
+		
+		System.out.println("Access Token Using Jar file for resource : " + resourceId + ",  Token : "+ token);
+		
+		return token;
+	}
+	
 	static String getToken(String resource, String objectId) throws Exception {
 		String urlString = "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource="
 				+ resource;
