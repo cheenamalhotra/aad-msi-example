@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 /**
  * Run this Application from Virtual machine with enabled System/User MSI
@@ -13,14 +14,14 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
  */
 public class TestMSIAuth {
 
-	static String serverName = ""; // Server URL xxxxxxx.database.windows.net
-	static String databaseName = ""; // Name of database
-	static String userMSIObjectId = ""; // Object ID of User Assigned MSI
+	static String serverName = "<svrname>.database.windows.net"; // Server URL xxxxxxx.database.windows.net
+	static String databaseName = "<dbname>"; // Name of database
+	static String userMSIObjectId = "obj id guid"; // Object ID of User Assigned MSI
 
 	static String hostNameInCertificate = "*.database.windows.net"; // Host Name in Certificate
 	static String ActiveDirectoryMSI = "ActiveDirectoryMSI"; // Authentication Mode for MSI Authentication
 
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args){
 
 		SQLServerDataSource ds = new SQLServerDataSource();
 		ds.setServerName(serverName);
@@ -35,6 +36,8 @@ public class TestMSIAuth {
 			while (rs.next()) {
 				System.out.println(rs.getString(1));
 			}
+		} catch (Exception ex) {
+			System.out.println("\n\nCaught Exception : " + ex);
 		}
 		
 		try (Connection con = ds.getConnection();
@@ -44,6 +47,8 @@ public class TestMSIAuth {
 			while (rs.next()) {
 				System.out.println(rs.getString(1));
 			}
+		} catch (Exception ex) {
+			System.out.println("\n\nCaught Exception : " + ex);
 		}
 
 		ds = new SQLServerDataSource();
@@ -60,8 +65,11 @@ public class TestMSIAuth {
 			while (rs.next()) {
 				System.out.println(rs.getString(1));
 			}
+		} catch (Exception ex) {
+			System.out.println("\n\nCaught Exception : " + ex);
 		}
-		
+
+
 		try (Connection con = ds.getConnection();
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery("SELECT Distinct TABLE_NAME FROM information_schema.TABLES")) {
@@ -69,6 +77,9 @@ public class TestMSIAuth {
 			while (rs.next()) {
 				System.out.println(rs.getString(1));
 			}
+		} catch (Exception ex) {
+			System.out.println("\n\nCaught Exception : " + ex);
 		}
+
 	}
 }

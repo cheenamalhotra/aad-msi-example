@@ -23,14 +23,14 @@ public class App {
 		App.getTokenUsingJar("https://database.windows.net/", ""); // Pass Object ID of User Assigned MSI
 	}
 
-    static String getTokenUsingJar(String resourceId, String clientId) throws Exception
+    static String getTokenUsingJar(String resourceId, String objectId) throws Exception
 	{
 		MSICredentials credsProvider = MSICredentials.getMSICredentials();
-		if (clientId != null && !clientId.isEmpty()) {
-			credsProvider.updateClientId(clientId);
+		if (objectId != null && !objectId.isEmpty()) {
+			credsProvider.updateObjectId(objectId);
 		}
 		
-		String token = credsProvider.getToken(resourceId).toBlocking().value().accessToken();
+		String token = credsProvider.getToken(resourceId).accessToken();
 		
 		System.out.println("Access Token Using Jar file for resource : " + resourceId + ",  Token : "+ token);
 		
