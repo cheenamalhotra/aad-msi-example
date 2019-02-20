@@ -33,9 +33,7 @@
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
-			<version>7.1.4-SNAPSHOT.jre11-preview</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/mssql-jdbc-jre11.jar</systemPath>
+			<version>7.2.1.jre11</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

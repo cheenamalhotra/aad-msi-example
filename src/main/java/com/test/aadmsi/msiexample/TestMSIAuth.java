@@ -18,7 +18,6 @@ public class TestMSIAuth extends CredentialManager {
         SQLServerDataSource ds = new SQLServerDataSource();
         ds.setServerName(serverName);
         ds.setDatabaseName(databaseName);
-        ds.setHostNameInCertificate(hostNameInCertificate);
         ds.setAuthentication(ActiveDirectoryMSI);
 
         try (Connection con = ds.getConnection(); Statement stmt = con.createStatement();
@@ -33,7 +32,6 @@ public class TestMSIAuth extends CredentialManager {
         ds.setServerName(serverName);
         ds.setDatabaseName(databaseName);
         ds.setAuthentication(ActiveDirectoryMSI);
-        ds.setHostNameInCertificate(hostNameInCertificate);
         ds.setMSIClientId(userMSIClientId); // (Optional)
 
         try (Connection con = ds.getConnection(); Statement stmt = con.createStatement();
