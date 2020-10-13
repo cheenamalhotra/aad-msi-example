@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 
 /**
@@ -40,6 +41,46 @@ public class TestMSIAuth extends CredentialManager {
             while (rs.next()) {
                 System.out.println(rs.getString(1));
             }
+        }
+
+        try (Connection con = ds.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT Distinct TABLE_NAME FROM information_schema.TABLES")) {
+          System.out.println("Connected with SYSTEM MSI Authentication, Tables : ");
+          while (rs.next()) {
+            System.out.println(rs.getString(1));
+          }
+        } catch (Exception ex) {
+          System.out.println("\n\nCaught Exception : " + ex);
+        }
+
+        ds = new SQLServerDataSource();
+        ds.setServerName(serverName);
+        ds.setDatabaseName(databaseName);
+        ds.setAuthentication(ActiveDirectoryMSI);
+        ds.setHostNameInCertificate(hostNameInCertificate);
+        ds.setMSIObjectId(userMSIObjectId);
+
+        try (Connection con = ds.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT @@VERSION")) {
+          System.out.println("\n\nConnected with User MSI Authentication");
+          while (rs.next()) {
+            System.out.println(rs.getString(1));
+          }
+        } catch (Exception ex) {
+          System.out.println("\n\nCaught Exception : " + ex);
+        }
+
+        try (Connection con = ds.getConnection();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT Distinct TABLE_NAME FROM information_schema.TABLES")) {
+          System.out.println("\n\nConnected with User MSI Authentication, Tables : ");
+          while (rs.next()) {
+            System.out.println(rs.getString(1));
+          }
+        } catch (Exception ex) {
+          System.out.println("\n\nCaught Exception : " + ex);
         }
     }
 }

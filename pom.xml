@@ -26,10 +26,39 @@
 					<target>11</target>
 				</configuration>
 			</plugin>
+					            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+				<version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${stagingDirectory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <includeScope>runtime</includeScope>
+                            <excludeArtifactIds>azure-functions-java-library</excludeArtifactIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
+		<dependency>
+            <groupId>com.microsoft.azure.msi_auth_token_provider</groupId>
+            <artifactId>azure-authentication-msi-token-provider</artifactId>
+            <version>1.0.0-beta</version>
+		    <scope>system</scope>
+			<systemPath>${basedir}/lib/azure-authentication-msi-token-provider.jar</systemPath>
+        </dependency>
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
